@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Classes\EmpresaVM.cs" />
     <Compile Include="Classes\ResultadoVM.cs" />
+    <Compile Include="Classes\RetornoApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -1,6 +1,7 @@
 ﻿using GpsCommom.Classes;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,61 +10,37 @@ namespace GPSCore.Service
 {
     public class DbFactory
     {
-        public void PesquisaEmpresa(EmpresaVM emVM)
-        {
-            using (MyDbContext db = new MyDbContext())
-            {
-                var pesquisa = db.GpsTblEmpresas.Where(o => o.Id == emVM.Id).FirstOrDefault();
-
-                if(pesquisa == null)
-                {
-                    emVM.Resultado.Erro = true;
-                    emVM.Resultado.Mensagem = "Não encontrou empresa";
-                }
-                else
-                {
-                    emVM.Id = pesquisa.Id;
-                    emVM.Empresa = pesquisa.CapitalSocial;
-                }
-            }
-        }
-
-        public void ValidarEmpresa(EmpresaVM emVM)
-        {
-            if(string.IsNullOrEmpty(emVM.Empresa))
-            {
-                emVM.Resultado.Erro = true;
-                emVM.Resultado.Mensagem = "Campo Vazio";
-            }
-        }
-
         public void SalvarEmpresa(EmpresaVM emVM)
         {
-            ValidarEmpresa(emVM);
+            emVM.ValidarEmpresa(emVM);
 
-            if(!emVM.Resultado.Erro)
+            if (!emVM.Resultado.Erro)
             {
-                using (MyDbContext db = new MyDbContext())
+                try
                 {
-                    var sql = @"insert";
-                    StringBuilder sb = new StringBuilder(sql);
-
-                    // SELECT
-                    //var retorno = db.Database.SqlQuery<EmpresaVM>(sb.ToString());
-
-                    db.Database.ExecuteSqlCommand(sb.ToString());
-
-                    //Create - Linq
-                    GpsTblEmpresa Cem = new GpsTblEmpresa
+                    using (MyDbContext db = new MyDbContext())
                     {
-                        Id = emVM.Id,
-                        CapitalSocial = emVM.Empresa
-                    };
+                        StringBuilder sb = new StringBuilder();
 
-                    db.GpsTblEmpresas.Add(Cem);
-                    db.SaveChanges();
+                        sb.Append(@"INSERT INTO dbo.gps_tbl_empresa (Nome, Cnpj, TipoEmpresa, CapitalSocial, Procura, Socios, DataAbertura)");
+                        sb.Append("VALUES ('" + emVM.Nome + "', '" + emVM.Cnpj + "', '" + emVM.TipoEmpresa + "', '" + emVM.CapitalSocial + "', '" + emVM.Procura + "', ");
+                        sb.Append(" '" + emVM.Socios + "', '" + emVM.DataAbertura + "'  )");
+
+                        db.Database.ExecuteSqlCommand(sb.ToString());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    emVM.Resultado.Mensagem = "Erro ao salvar empresa: " + ex.ToString();
+                    emVM.Resultado.Erro = true;
                 }
             }
+            else
+            {
+                emVM.Resultado.Mensagem = "Dado de empresa vazio ou nullo";
+            }
         }
+
+        //chamar api no metodo 
     }
 }

@@ -32,12 +32,26 @@ namespace GPSearch.Controllers
 
         public JsonResult Empresa(EmpresaVM emVM)
         {
-            //EmpresaVM emVM = new EmpresaVM();
-
             try
             {
-                GPSCore.Service.DbFactory co = new GPSCore.Service.DbFactory();
-                co.PesquisaEmpresa(emVM);
+                GPSCore.Service.DbFactory conn = new GPSCore.Service.DbFactory();
+                conn.SalvarEmpresa(emVM);
+            }
+            catch (Exception ex)
+            {
+                emVM.Resultado.Erro = true;
+                emVM.Resultado.Mensagem = ex.Message;
+            }
+
+            return Json(emVM, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult PesquisarApi(EmpresaVM emVM)
+        {
+            try
+            {
+                //criar metodo no core
+                var teste = emVM;
             }
             catch (Exception ex)
             {
