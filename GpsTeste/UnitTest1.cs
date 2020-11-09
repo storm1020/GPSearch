@@ -11,25 +11,25 @@ namespace GpsTeste
     [TestClass]
     public class UnitTest1
     {
-        //[TestMethod]
-        //public void CreateTest()
-        //{
-        //    EmpresaVM eVM = new EmpresaVM();
+        [TestMethod]
+        public void CreateTest()
+        {
+            EmpresaVM eVM = new EmpresaVM();
 
-        //    eVM.Nome = "Iago";
-        //    eVM.Cnpj = "0123";
-        //    eVM.TipoEmpresa = 1;
-        //    eVM.CapitalSocial = "XPTO";
-        //    eVM.Procura = "XPTO";
-        //    eVM.Socios = "XPTO";
-        //    var dataS = DateTime.Today.ToString("yyyy-MM-dd");
-        //    var data = DateTime.Parse(dataS);
-        //    eVM.DataAbertura = data;
+            eVM.Nome = "Iago";
+            eVM.Cnpj = "0123";
+            eVM.TipoEmpresa = "";
+            eVM.CapitalSocial = "XPTO";
+            eVM.Procura = "XPTO";
+            eVM.Socios = "XPTO";
+            //var dataS = DateTime.Today.ToString("yyyy-MM-dd");
+            //var data = DateTime.Parse(dataS);
+            eVM.DataAbertura = "";
 
 
-        //    DbFactory df = new DbFactory();
-        //    df.SalvarEmpresa(eVM);
-        //}
+            DbFactory df = new DbFactory();
+            df.SalvarEmpresa(eVM);
+        }
 
         [TestMethod]
         public void BuscarApiTest()

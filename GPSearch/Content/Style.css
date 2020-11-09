@@ -1,0 +1,18 @@
+﻿.jumbotron{
+    margin-top: 20px;
+    background-color: #130d0d;
+}
+
+#listaEmpresa {
+    margin-top: 50px;
+}
+
+#navbarNav ul, li, a {
+    padding: 3px;
+    color: #130d0d;
+}
+
+#btnSalvar{
+    margin-top: 20px;
+    margin-left: 200px;
+}

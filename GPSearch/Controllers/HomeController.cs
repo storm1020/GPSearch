@@ -1,5 +1,6 @@
 ﻿using GpsCommom.Classes;
 using GPSCore;
+using GPSCore.Service;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -25,16 +26,13 @@ namespace GPSearch.Controllers
 
         public ActionResult Contact()
         {
-
             return View();
-
         }
-
         public JsonResult Empresa(EmpresaVM emVM)
         {
             try
             {
-                GPSCore.Service.DbFactory conn = new GPSCore.Service.DbFactory();
+                DbFactory conn = new DbFactory();
                 conn.SalvarEmpresa(emVM);
             }
             catch (Exception ex)
@@ -45,13 +43,26 @@ namespace GPSearch.Controllers
 
             return Json(emVM, JsonRequestBehavior.AllowGet);
         }
-
-        public JsonResult PesquisarApi(EmpresaVM emVM)
+        public string TrataCnpj(string cnpj)
         {
+            if (!string.IsNullOrEmpty(cnpj))
+            {
+                cnpj = cnpj.Replace("/", "");
+                cnpj = cnpj.Replace("-", "");
+                cnpj = cnpj.Replace(".", "");
+            }
+
+            return cnpj;
+        }
+        public JsonResult PesquisarApi(string cnpj)
+        {
+            EmpresaVM emVM = new EmpresaVM();
+
             try
             {
-                //criar metodo no core
-                var teste = emVM;
+                DbFactory conn = new DbFactory();
+                cnpj = TrataCnpj(cnpj);
+                emVM = conn.BuscarPorCnpj(cnpj);
             }
             catch (Exception ex)
             {
